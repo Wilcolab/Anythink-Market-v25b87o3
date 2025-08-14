@@ -1,17 +1,12 @@
-# Use the official Python base image
-FROM python:3.9-slim
+FROM python:3.9
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the dependencies file to the working directory
-COPY requirements.txt /app
-
-# Install the dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port on which the server will run
-EXPOSE 8000
+# Set working directory to src
+COPY ./src /app
 
-# Set the command to run the server
-CMD ["uvicorn", "src.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+# Start Uvicorn from inside src
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
