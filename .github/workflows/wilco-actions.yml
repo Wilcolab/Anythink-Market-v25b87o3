@@ -36,10 +36,24 @@ jobs:
         with:
           secrets: ${{ toJSON(secrets) }}
 
+
       - name: Setup Node for Wilco Checks
         uses: actions/setup-node@v3
         with:
           node-version: "16"
+
+      - name: Install Node dependencies
+        run: |
+          cd node-server
+          yarn install
+
+      - name: Start backend
+        run: |
+          cd node-server
+          nohup yarn start &
+          sleep 5
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/anythink-market
 
       - name: Wilco checks
         id: Wilco
